@@ -1,0 +1,82 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Employee Data Management</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+    <script src="assets/js/moment.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row h-25 bg-dark text-white">
+            <div class="col-lg-12 text-center mt-5 mb-0"><h1 class="mb-0">Train Scheduler</h1></div>
+            <div class="col-lg-12 text-center mt-0"><p>Choo choo!</p></div>
+            
+        </div>
+        <div class="row my-3 border border-secondary">
+            <div class="col-lg-12 bg-light text-muted">
+                <h3 class="text-left">Current Train Schedule</h3>
+            </div>
+            <div class="col-lg-12 bg-white">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Train Name</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Frequency (min)</th>
+                            <th scope="col">Next Arrival</th>
+                            <th scope="col">Minutes Away</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trainData">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row border border-secondary">
+            <div class="col-lg-12 bg-light text-muted">
+                <h3>Add Train</h3>
+            </div>
+            <div class="input-group mt-3 col-lg-12 d-flex flex-column">
+                <form>
+                    <div class="form-group">
+                        <label>Train Name</label>
+                        <input type="text" class="form-control name" placeholder="Train Name" aria-label="Train Name" id="name">
+      
+                    </div>
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <input type="text" class="form-control role" placeholder="Destination" aria-label="Destination" id="destination">
+                        <div class="input-group-append">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>First Train Time</label>
+                        <input type="time" class="form-control" id="firstTrain">
+                        <div class="input-group-append">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Frequency (min)</label>
+                        <input type="number" class="form-control" placeholder="Frequency" aria-label="Frequency"
+                            id="frequency">
+                        <div class="input-group-append">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary float-right idk">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="assets/js/logic.js"></script>
+</html>
