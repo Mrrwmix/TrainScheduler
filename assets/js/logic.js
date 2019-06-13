@@ -9,58 +9,39 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-
 var database = firebase.database();
-// Store new employee data in ID "#employeeData" by making a new <tr> tag and appending everything within <td>
-name = "";
-role = "";
-startDate = "";
-monthlyPay = 0;
 
-
-$(".idk").on("click", function (event) {
+$("#submit").on("click", function (event) {
     event.preventDefault();
-    name = $("#name").val();
-    role = $("#role").val();
-    startDate = $("#start").val();
-    monthlyPay = $("#rate").val();
+    var name = $("#name").val();
+    var destino = $("#destination").val();
+    var firstTrainTime = $("#firstTrain").val();
+    var frequency = $("#frequency").val();
 
-    database.ref().push({
+    database.ref('trains').push({
         name: name,
-        role: role,
-        startDate: startDate,
-        monthlyPay: monthlyPay,
+        destino: destino,
+        firstTrainTime: firstTrainTime,
+        frequency: frequency,
         dateAdded: firebase.database.ServerValue.TIMESTAMP
     })
-
+    $("input").each(function(index){
+        $(this).val('');
+    })
 })
 
-database.ref().on("child_added", function (snapshot, prevChildKey) {
+database.ref('trains').on("child_added", function (snapshot, prevChildKey) {
     var newPost = snapshot.val();
     var newTR = $("<tr>");
     var nameTD = $("<td>").text(newPost.name);
-    var roleTD = $("<td>").text(newPost.role);
-    var startDateTD = $("<td>").text(newPost.startDate);
-    var monthsWorkedTD = $("<td>").text(moment(newPost.startDate).toNow(true));
-    var monthlyPay = $("<td>").text(newPost.monthlyPay);
-    var billedTD = $("<td>").text(totalBilled());
+    var destinoTD = $("<td>").text(newPost.destino);
+    var freqTD = $("<td>").text(newPost.frequency);
 
-    function totalBilled() {
-        var startingMonth = moment(newPost.startDate).month();
-        var currentMonth = moment(newPost.dateAdded).month();
-        var monthsWorked = currentMonth - startingMonth;
-        return monthsWorked * newPost.monthlyPay;
-    }
 
     newTR.append(nameTD);
-    newTR.append(roleTD);
-    newTR.append(startDateTD);
-    newTR.append(monthsWorkedTD);
-    newTR.append(monthlyPay);
-    newTR.append(billedTD);
-
-    $("#employeeData").append(newTR);
+    newTR.append(destinoTD);
+    newTR.append(freqTD);
+    $("#trainData").append(newTR);
 
     console.log(newPost);
 })
