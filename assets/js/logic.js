@@ -36,8 +36,17 @@ database.ref('trains').on("child_added", function (snapshot, prevChildKey) {
     var nameTD = $("<td>").text(newPost.name);
     var destinoTD = $("<td>").text(newPost.destino);
     var freqTD = $("<td>").text(newPost.frequency);
-    var nextArrivalTD = $("<td>").text(nextArrival(newPost.firstTrainTime)); // Figuring out how to get the next arrival time posted here
-    var minutesAwayTD = $("<td>").text(); //Possibly using $moment(arrivalTD).toNow(true)
+
+    // Math to determine next train time and minutes away
+
+    var firstTimeConverted = moment(newPost.firstTrainTime, 'HH:mm').subtract(1, 'years');
+    var diffTime = moment().diff(moment(firstTimeConverted), 'minutes');
+    var timeApartRemainder = diffTime % newPost.frequency;
+    var minutesUntilTrain = newPost.frequency - timeApartRemainder;
+    var nextTrain = moment().add(minutesUntilTrain, "minutes");
+
+    var nextArrivalTD = $("<td>").text(moment(nextTrain).format('hh:mm A')); // Figuring out how to get the next arrival time posted here
+    var minutesAwayTD = $("<td>").text(minutesUntilTrain); //Possibly using $moment(arrivalTD).toNow(true)
 
     newTR.append(nameTD);
     newTR.append(destinoTD);
@@ -46,15 +55,13 @@ database.ref('trains').on("child_added", function (snapshot, prevChildKey) {
     newTR.append(minutesAwayTD);
     $("#trainData").append(newTR);
 
-    function nextArrival(start){
-        var firstTimeConverted = moment(start, 'HH:mm').subtract(1, 'years');
-        var diffTime = moment().diff(moment(firstTimeConverted), 'minutes');
-        console.log(diffTime);
-        var timeApartRemainder = diffTime % newPost.frequency;
-        console.log(timeApartRemainder);
-        var minutesUntilTrain = newPost.frequency - timeApartRemainder;
-        console.log("Minutes till train: " + minutesUntilTrain);
-        var nextTrain = moment().add(minutesUntilTrain, "minutes");
-        console.log("Next train = " + moment(nextTrain).format("hh:mm"));
-    }
+        // var firstTimeConverted = moment(newPost.firstTrainTime, 'HH:mm').subtract(1, 'years');
+        // var diffTime = moment().diff(moment(firstTimeConverted), 'minutes');
+        // console.log(diffTime);
+        // var timeApartRemainder = diffTime % newPost.frequency;
+        // console.log(timeApartRemainder);
+        // var minutesUntilTrain = newPost.frequency - timeApartRemainder;
+        // console.log("Minutes till train: " + minutesUntilTrain);
+        // var nextTrain = moment().add(minutesUntilTrain, "minutes");
+        // console.log("Next train = " + moment(nextTrain).format("hh:mm A"));
 })
